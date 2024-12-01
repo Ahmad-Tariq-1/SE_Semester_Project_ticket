@@ -223,3 +223,12 @@ void updateAdminPassword(const string &adminUsername);
 void displayAdminMenu();
 void displayAllEvents();
 void displayAllUserData();
+string toLowerCase(const string &str)
+{
+    string lowerStr = str; // Create a copy to modify
+    for (int i = 0; i < lowerStr.length(); i++)
+    {
+        lowerStr[i] = tolower(lowerStr[i]);
+    }
+    return lowerStr;
+}
