@@ -289,3 +289,93 @@ void displayAllUserData()
         cout << "-------------------------------\n";
     }
 }
+
+void updateUserProfile(const string &username)
+{
+    if (users.find(username) == users.end())
+    {
+        cout << "\n\tUser not found.";
+        return;
+    }
+
+    string choice;
+    string newValue;
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Update Username" << setw(20) << "|\n";
+        cout << "\t\t| [2]   |     Update Password" << setw(20) << "|\n";
+        cout << "\t\t| [3]   |     Update Email" << setw(23) << "|\n";
+        cout << "\t\t| [4]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t|_______|______________________________________|\n";
+
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, choice);
+            if (errorHandler.menuChoice(choice))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (choice == "1")
+        {
+            while (true)
+            {
+                cout << "Enter new username: ";
+                getline(cin, newValue);
+                if (errorHandler.nameValidation(newValue))
+                {
+                    break;
+                }
+                cout << "\n\tInvalid username\n\n";
+            }
+            users[username].username = newValue;
+            cout << "\n\tUsername updated successfully!\n";
+        }
+
+        else if (choice == "2")
+        {
+            while (true)
+            {
+                errorHandler.passLogic(newValue, "Enter new Password: ");
+                if (errorHandler.passwordValidation(newValue))            
+                {
+                    break; 
+                }
+            }
+            users[username].password = newValue;
+            cout << "\n\tPassword updated successfully!\n";
+        }
+        else if (choice == "3")
+        {
+            while (true)
+            {
+                cout << "Enter new email: ";
+                getline(cin, newValue);
+                if (errorHandler.emailValidation(newValue))
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "\n\tInvalid Email. Please try again.\n\n";
+                }
+            }
+            users[username].email = newValue;
+            cout << "\n\tEmail updated successfully!\n";
+        }
+        else if (choice == "4")
+        {
+            cout << "\nExiting User Panel...\n";
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid choice. Please try again.\n";
+        }
+    }
+}
