@@ -668,3 +668,131 @@ void viewAllUsers()
         }
     }
 }
+
+void cancelTicket(const string &username)
+{
+    string eventIDStr;
+    int eventID;
+
+    cout << "Enter event ID: ";
+    getline(cin, eventIDStr);
+
+    if (!errorHandler.idValidation(eventIDStr) || events.find(stoi(eventIDStr)) == events.end())
+    {
+        cout << "Invalid event ID.\n";
+        return;
+    }
+
+    eventID = stoi(eventIDStr);
+
+    if (users.find(username) == users.end())
+    {
+        cout << "User not found.\n";
+        return;
+    }
+
+    if (users[username].tickets.find(eventID) == users[username].tickets.end())
+    {
+        cout << "You have not bought any tickets for this event.\n";
+        return;
+    }
+
+    Event &event = events[eventID];
+
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Cancel VIP tickets" << setw(19) << "|\n";
+        cout << "\t\t| [2]   |     Cancel Regular tickets" << setw(16) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t|_______|______________________________________|\n";
+
+        string choice;
+        cout << "Enter your choice: ";
+        getline(cin, choice);
+
+        if (choice == "1" || choice == "2")
+        {
+            int vipTicketsBooked = users[username].canceledVipTickets[eventID];
+            int regularTicketsBooked = users[username].canceledRegularTickets[eventID];
+
+            if ((choice == "1" && vipTicketsBooked == 0) || (choice == "2" && regularTicketsBooked == 0))
+            {
+                cout << "You do not have any " << (choice == "1" ? "VIP" : "Regular") << " tickets for this event.\n";
+                continue;
+            }
+
+            string numberOfTicketsStr;
+            int numberOfTickets;
+
+            cout << "Enter number of tickets to cancel: ";
+            getline(cin, numberOfTicketsStr);
+
+            if (!errorHandler.idValidation(numberOfTicketsStr))
+            {
+                cout << "Number of tickets must be a positive integer.\n";
+                continue;
+            }
+
+            numberOfTickets = stoi(numberOfTicketsStr);
+
+            if (choice == "1" && vipTicketsBooked < numberOfTickets)
+            {
+                cout << "You don't have that many VIP tickets.\n";
+                return;
+            }
+            if (choice == "2" && regularTicketsBooked < numberOfTickets)
+            {
+                cout << "You don't have that many Regular tickets.\n";
+                return;
+            }
+
+            if (choice == "1")
+            {
+                int seatsToCancel = min(numberOfTickets, vipTicketsBooked);
+
+                for (int i = 0; i < seatsToCancel; ++i)
+                {
+                    event.vipSeatsQueue.push(0);
+                }
+                users[username].canceledVipTickets[eventID] -= seatsToCancel;
+                users[username].tickets[eventID] -= seatsToCancel;
+                if (users[username].tickets[eventID] == 0)
+                {
+                    users[username].tickets.erase(eventID);
+                }
+
+                cout << "VIP tickets cancelled successfully!\n";
+                return;
+            }
+            else if (choice == "2")
+            {
+                int seatsToCancel = min(numberOfTickets, regularTicketsBooked);
+
+                for (int i = 0; i < seatsToCancel; ++i)
+                {
+                    event.regularSeatsQueue.push(0);
+                }
+                users[username].canceledRegularTickets[eventID] -= seatsToCancel;
+                users[username].tickets[eventID] -= seatsToCancel;
+                if (users[username].tickets[eventID] == 0)
+                {
+                    users[username].tickets.erase(eventID);
+                }
+
+                cout << "Regular tickets cancelled successfully!\n";
+                return;
+            }
+        }
+        else if (choice == "0")
+        {
+            cout << "\nExiting...\n";
+            return;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
