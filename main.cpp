@@ -615,3 +615,56 @@ void signup()
 
     cout << "\n\tSignup Successfully!";
 }
+
+void login()
+{
+    string username, password;
+    while (true)
+    {
+        cout << "\nEnter Username: ";
+        getline(cin, username);
+        if (errorHandler.nameValidation(username))
+        {
+            break;
+        }
+        else
+        {
+            cout << "\n\n\tInvalid Username. Please try again.\n";
+        }
+    }
+
+    errorHandler.passLogic(password, "Enter Password: ");
+    string lowerUsername = toLowerCase(username);
+    bool userFound = false;
+    for (const auto &user : users)
+    {
+        if (toLowerCase(user.first) == lowerUsername && user.second.password == password)
+        {
+            userFound = true;
+            cout << "\n\n\tWelcome, " << user.first << ".\n";
+            displayUserMenu(user.first);
+            break;
+        }
+    }
+
+    if (!userFound)
+    {
+        cout << "\n\n\tInvalid username or password!\n";
+    }
+}
+
+void viewAllUsers()
+{
+    if (users.empty())
+    {
+        cout << "\nNo users are registered yet.\n";
+    }
+    else
+    {
+        cout << "\nRegistered Users:\n";
+        for (const auto &user : users)
+        {
+            cout << "Username: " << user.second.username << ", Email: " << user.second.email << "\n";
+        }
+    }
+}
