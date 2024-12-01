@@ -379,3 +379,22 @@ void updateUserProfile(const string &username)
         }
     }
 }
+void setupDefaultAdmin()
+{
+    string defaultAdminUsername = "ahmed";
+    string defaultAdminPassword = "123456";
+    string defaultAdminEmail = "ahmed2708@gmail.com";
+    
+
+    if (users.find(defaultAdminUsername) == users.end())
+    {
+        User adminUser = {defaultAdminUsername, defaultAdminPassword, defaultAdminEmail, {}};
+        users[defaultAdminUsername] = adminUser;
+        admins[defaultAdminUsername] = true;
+        cout << "Default admin account created successfully!\n";
+    }
+    else
+    {
+        cout << "Default admin already exists.\n";
+    }
+}
