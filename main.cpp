@@ -232,3 +232,60 @@ string toLowerCase(const string &str)
     }
     return lowerStr;
 }
+
+void displayAllUserData()
+{
+    if (users.empty())
+    {
+        cout << "No users available.\n";
+        return;
+    }
+
+    cout << "User Data:\n";
+    for (const auto &userPair : users)
+    {
+        const string &username = userPair.first;
+        const User &user = userPair.second;
+
+        if (admins.find(username) != admins.end() && admins.at(username))
+        {
+            continue;
+        }
+
+        cout << "Username: " << user.username << "\nEmail: " << user.email << "\nTickets:\n";
+
+        if (user.tickets.empty())
+        {
+            cout << "  No tickets bought.\n";
+        }
+        else
+        {
+            for (const auto &ticketPair : user.tickets)
+            {
+                int eventID = ticketPair.first;
+                int totalTickets = ticketPair.second;
+
+                int vipTickets = 0;
+                int regularTickets = 0;
+                const Event &event = events.at(eventID);
+
+                if (user.canceledVipTickets.find(eventID) != user.canceledVipTickets.end())
+                {
+                    vipTickets = user.canceledVipTickets.at(eventID);
+                }
+
+                if (user.canceledRegularTickets.find(eventID) != user.canceledRegularTickets.end())
+                {
+                    regularTickets = user.canceledRegularTickets.at(eventID);
+                }
+
+                cout << "\nEvent ID: " << eventID
+                     << ",\tEvent Name: " << event.eventName
+                     << ",\tVIP Tickets: " << vipTickets
+                     << ",\tRegular Tickets: " << regularTickets << '\n';
+            }
+        }
+
+        cout << "-------------------------------\n";
+    }
+}
