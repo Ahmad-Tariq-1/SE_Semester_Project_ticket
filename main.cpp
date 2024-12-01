@@ -171,3 +171,14 @@ public:
         return true;
     }
 };
+
+ErrorHandling errorHandler;
+struct User
+{
+    string username;
+    string password;
+    string email;
+    unordered_map<int, int> tickets;              
+    unordered_map<int, int> canceledVipTickets;     
+    unordered_map<int, int> canceledRegularTickets;
+};
