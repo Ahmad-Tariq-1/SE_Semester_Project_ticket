@@ -951,3 +951,37 @@ void updateAdminPassword(const string &adminUsername)
     users[adminUsername].password = newPassword;
     cout << "\n\n\tPassword updated successfully!\n";
 }
+
+void addNewAdmin()
+{
+    string newAdminUsername, password, email;
+    while (true)
+    {
+        cout << "\nEnter new admin's Username: ";
+        getline(cin, newAdminUsername);
+        if (errorHandler.nameValidation(newAdminUsername) && admins.find(newAdminUsername) == admins.end())
+            break;
+        cout << "\n\tInvalid Username. Please try again.\n";
+    }
+
+    while (true)
+    {
+        errorHandler.passLogic(password, "Enter new admin's Password: ");
+        if (errorHandler.passwordValidation(password))
+            break;
+    }
+
+    while (true)
+    {
+        cout << "\nEnter new admin's Valid Email: ";
+        getline(cin, email);
+        if (errorHandler.emailValidation(email))
+            break;
+        cout << "\n\tInvalid Email. Please try again.\n";
+    }
+
+    User newAdmin = {newAdminUsername, password, email, {}};
+    users[newAdminUsername] = newAdmin;
+    admins[newAdminUsername] = true;
+    cout << "\n\tNew admin added successfully!\n";
+}
