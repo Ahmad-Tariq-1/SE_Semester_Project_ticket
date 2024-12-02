@@ -1003,3 +1003,57 @@ void removeAdmin()
         cout << "\n\tAdmin not found or cannot be removed.\n";
     }
 }
+
+void updateadminPanel(const string &adminUsername)
+{
+    if (admins.find(adminUsername) == admins.end())
+    {
+        cout << "\n\tAccess Denied. Only admins can access this panel.\n";
+        return;
+    }
+
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Update own Password" << setw(16) << "|\n";
+        cout << "\t\t| [2]   |     Add New Admin" << setw(22) << "|\n";
+        cout << "\t\t| [3]   |     Remove an Admin" << setw(20) << "|\n";
+        cout << "\t\t| [4]   |     Exit Admin Panel" << setw(19) << "|\n";
+        cout << "\t\t|_______|______________________________________|\n";
+
+        string option;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, option);
+            if (errorHandler.menuChoice(option))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (option == "1")
+        {
+            updateAdminPassword(adminUsername);
+        }
+        else if (option == "2")
+        {
+            addNewAdmin();
+        }
+        else if (option == "3")
+        {
+            removeAdmin();
+        }
+        else if (option == "4")
+        {
+            cout << "\nExiting Update Admin Panel...\n";
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid choice. Please try again.\n";
+        }
+    }
+}
