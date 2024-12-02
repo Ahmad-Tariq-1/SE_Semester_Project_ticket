@@ -796,3 +796,50 @@ void cancelTicket(const string &username)
         }
     }
 }
+
+void viewTickets(const string &username)
+{
+    if (users.find(username) == users.end())
+    {
+        cout << "User not found.\n";
+        return;
+    }
+
+    const User &user = users[username];
+
+    if (user.tickets.empty())
+    {
+        cout << "You have not purchased any tickets.\n";
+        return;
+    }
+
+    cout << "Your tickets:\n";
+    for (const auto &ticket : user.tickets)
+    {
+        int eventID = ticket.first;
+        int totalTickets = ticket.second;
+        if (events.find(eventID) == events.end())
+        {
+            cout << "Event ID " << eventID << " has been deleted and no longer exists.\n";
+            continue;
+        }
+
+        int vipTickets = 0;
+        int regularTickets = 0;
+
+        if (user.canceledVipTickets.find(eventID) != user.canceledVipTickets.end())
+        {
+            vipTickets = user.canceledVipTickets.at(eventID);
+        }
+
+        if (user.canceledRegularTickets.find(eventID) != user.canceledRegularTickets.end())
+        {
+            regularTickets = user.canceledRegularTickets.at(eventID);
+        }
+
+        cout << "\nEvent ID: " << eventID
+             << ",\tEvent Name: " << events[eventID].eventName
+             << ",\tVIP Tickets: " << vipTickets
+             << ",\tRegular Tickets: " << regularTickets << '\n';
+    }
+}
