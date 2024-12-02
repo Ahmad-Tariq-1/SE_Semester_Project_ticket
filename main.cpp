@@ -985,3 +985,21 @@ void addNewAdmin()
     admins[newAdminUsername] = true;
     cout << "\n\tNew admin added successfully!\n";
 }
+
+void removeAdmin()
+{
+    string targetAdminUsername;
+    cout << "\nEnter the username of the admin to remove: ";
+    getline(cin, targetAdminUsername);
+
+    if (admins.find(targetAdminUsername) != admins.end())
+    {
+        admins.erase(targetAdminUsername);
+        users.erase(targetAdminUsername);
+        cout << "\n\tAdmin removed successfully!\n";
+    }
+    else
+    {
+        cout << "\n\tAdmin not found or cannot be removed.\n";
+    }
+}
