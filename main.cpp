@@ -843,3 +843,93 @@ void viewTickets(const string &username)
              << ",\tRegular Tickets: " << regularTickets << '\n';
     }
 }
+
+void displayUserMenu(const string &username)
+{
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Buy Tickets" << setw(24) << "|\n";
+        cout << "\t\t| [2]   |     View Tickets" << setw(23) << "|\n";
+        cout << "\t\t| [3]   |     Cancel Tickets" << setw(21) << "|\n";
+        cout << "\t\t| [4]   |     View All Events" << setw(20) << "|\n";
+        cout << "\t\t| [5]   |     Update Profile" << setw(21) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t|_______|______________________________________|\n";
+
+        string option;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, option);
+            if (errorHandler.menuChoice(option))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+        if (option == "1")
+        {
+            buyTickets(username);
+        }
+        else if (option == "2")
+        {
+            viewTickets(username);
+        }
+        else if (option == "3")
+        {
+            cancelTicket(username);
+        }
+        else if (option == "4")
+        {
+            displayAllEvents();
+        }
+        else if (option == "5")
+        {
+            updateUserProfile(username);
+        }
+        else if (option == "0")
+        {
+            cout << "Exit User Panel\n";
+            break;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
+
+bool adminLogin(string &loggedInAdmin)
+{
+    string username, password;
+    while (true)
+    {
+        cout << "\nEnter Admin Username: ";
+        getline(cin, username);
+        if (errorHandler.nameValidation(username))
+        {
+            break; 
+        }
+        else
+        {
+            cout << "\n\n\tInvalid Username. Please try again.\n";
+        }
+    }
+    errorHandler.passLogic(password, "Enter Admin Password: ");
+
+    if (admins.find(username) == admins.end())
+    {
+        cout << "\n\n\tAdmin not found.\n";
+        return false;
+    }
+    if (users[username].password != password)
+    {
+        cout << "Incorrect password.\n";
+        return false;
+    }
+
+    loggedInAdmin = username;
+    return true;
+}
