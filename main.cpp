@@ -933,3 +933,21 @@ bool adminLogin(string &loggedInAdmin)
     loggedInAdmin = username;
     return true;
 }
+void updateAdminPassword(const string &adminUsername)
+{
+    if (admins.find(adminUsername) == admins.end())
+    {
+        cout << "You must be an admin to access this feature.\n";
+        return;
+    }
+
+    string newPassword;
+    while (true)
+    {
+        errorHandler.passLogic(newPassword, "Enter new Password: ");
+        if (errorHandler.passwordValidation(newPassword))
+            break;
+    }
+    users[adminUsername].password = newPassword;
+    cout << "\n\n\tPassword updated successfully!\n";
+}
