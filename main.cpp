@@ -1236,3 +1236,172 @@ void updateEvent()
         }
     }
 }
+
+void manageTickets()
+{
+    string eventIDStr;
+    int eventID;
+
+    while (true)
+    {
+        cout << "Enter event ID to manage tickets: ";
+        getline(cin, eventIDStr);
+
+        if (errorHandler.idValidation(eventIDStr))
+        {
+            eventID = stoi(eventIDStr); 
+            break;                     
+        }
+        else
+        {
+            cout << "Invalid event ID. Please enter a numeric event ID with no spaces.\n";
+            continue;
+        }
+    }
+
+    if (events.find(eventID) == events.end())
+    {
+        cout << "Event not found.\n";
+        return;
+    }
+
+    Event &event = events[eventID];
+    cout << "Managing tickets for Event ID: " << event.eventId << ", Event Name: " << event.eventName << '\n';
+    cout << "Total seats: " << event.totalSeats << ", VIP seats: " << event.vipSeats << ", Regular seats: " << event.regularSeats << '\n';
+    cout << "Available VIP seats: " << event.vipSeatsQueue.size() << ", Available Regular seats: " << event.regularSeatsQueue.size() << '\n';
+
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Add seats" << setw(26) << "|\n";
+        cout << "\t\t| [2]   |     Remove seats" << setw(23) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t||_|\n";
+
+        string choice;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, choice);
+            if (choice == "0" || errorHandler.menuChoice(choice))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (choice == "0") 
+        {
+            cout << "Exiting ticket management.\n";
+            break;
+        }
+
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     VIP Seats" << setw(26) << "|\n";
+        cout << "\t\t| [2]   |     Regular Seats" << setw(22) << "|\n";
+        cout << "\t\t| [0]   |     Back to Main Menu" << setw(19) << "|\n";
+        cout << "\t\t||_|\n";
+
+        string option;
+        while (true)
+        {
+            cout << "Enter seat type: ";
+            getline(cin, option);
+            if (option == "0" || errorHandler.menuChoice(option)) 
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (option == "0")
+        {
+            cout << "Returning to main menu.\n";
+            continue;
+        }
+
+        string seatsStr;
+        int seats;
+
+        while (true)
+        {
+            cout << "Enter number of seats to " << (choice == "1" ? "add: " : "remove: ");
+            getline(cin, seatsStr);
+
+            if (errorHandler.idValidation(seatsStr))
+            {
+                seats = stoi(seatsStr);
+                break;                  
+            }
+            else
+            {
+                cout << "Invalid number of seats. Please enter a numeric value with no spaces.\n";
+            }
+        }
+
+        if (choice == "1") 
+        {
+            if (option == "1") 
+            {
+                for (int i = 0; i < seats; ++i)
+                {
+                    events[eventID].vipSeatsQueue.push(events[eventID].vipSeats + 1 + i);
+                }
+                events[eventID].vipSeats += seats;
+            }
+            else if (option == "2") 
+            {
+                for (int i = 0; i < seats; ++i)
+                {
+                    events[eventID].regularSeatsQueue.push(events[eventID].regularSeats + 1 + i);
+                }
+                events[eventID].regularSeats += seats;
+            }
+            events[eventID].totalSeats += seats;
+            cout << "Seats added successfully.\n";
+        }
+        else if (choice == "2")
+        {
+            if (option == "1") 
+            {
+                if (seats <= event.vipSeatsQueue.size())
+                {
+                    for (int i = 0; i < seats; ++i)
+                    {
+                        events[eventID].vipSeatsQueue.pop();
+                    }
+                    events[eventID].vipSeats -= seats;
+                    events[eventID].totalSeats -= seats;
+                    cout << "VIP seats removed successfully.\n";
+                }
+                else
+                {
+                    cout << "Not enough VIP seats available to remove.\n";
+                }
+            }
+            else if (option == "2")
+            {
+                if (seats <= event.regularSeatsQueue.size())
+                {
+                    for (int i = 0; i < seats; ++i)
+                    {
+                        events[eventID].regularSeatsQueue.pop();
+                    }
+                    events[eventID].regularSeats -= seats;
+                    events[eventID].totalSeats -= seats;
+                    cout << "Regular seats removed successfully.\n";
+                }
+                else
+                {
+                    cout << "Not enough Regular seats available to remove.\n";
+                }
+            }
+        }
+
+        cout << "Current state for Event ID: " << event.eventId << ", Event Name: " << event.eventName << '\n';
+        cout << "Total seats: " << event.totalSeats << ", VIP seats: " << event.vipSeats << ", Regular seats: " << event.regularSeats << "\n";
+        cout << "Available VIP seats: " << event.vipSeatsQueue.size() << ", Available Regular seats: " << event.regularSeatsQueue.size() << "\n";
+    }
+}
