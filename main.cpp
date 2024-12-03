@@ -1165,3 +1165,74 @@ void addEvent() {
         cout << "Error: Could not open file to save event.\n";
     }
 }
+void updateEvent()
+{
+    string eventIDStr;
+    int eventID;
+    cout << "Enter event ID to update or delete: ";
+    getline(cin, eventIDStr);
+
+    if (!errorHandler.idValidation(eventIDStr) || events.find(stoi(eventIDStr)) == events.end())
+    {
+        cout << "Invalid event ID.\n";
+        return;
+    }
+
+    eventID = stoi(eventIDStr);
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Update the event" << setw(19) << "|\n";
+        cout << "\t\t| [2]   |     Delete the event" << setw(19) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t||_|\n";
+        string choice;
+        cout << "Enter your choice: ";
+        getline(cin, choice);
+
+        if (choice == "1")
+        {
+            string newEventName;
+            while (true)
+            {
+                cout << "\nEnter new Event Name: ";
+                getline(cin, newEventName);
+                if (errorHandler.nameValidation(newEventName)) 
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "\n\n\tInvalid Event Name. Please try again.\n";
+                }
+            }
+
+            events[eventID].eventName = newEventName;
+            cout << "Event updated successfully!\n";
+        }
+        else if (choice == "2")
+        {
+            for (auto &userPair : users)
+            {
+                User &user = userPair.second;
+                user.tickets.erase(eventID);
+                user.canceledVipTickets.erase(eventID);
+                user.canceledRegularTickets.erase(eventID);
+            }
+
+            events.erase(eventID);
+            cout << "Event deleted successfully!\n";
+            break; 
+        }
+        else if (choice == "0")
+        {
+            cout << "\nExiting...\n";
+            break;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
