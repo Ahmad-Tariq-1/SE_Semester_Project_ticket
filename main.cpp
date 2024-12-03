@@ -1092,3 +1092,76 @@ void updateadminPanel(const string &adminUsername)
         }
     }
 }
+void addEvent() {
+    string eventIDStr, totalSeatsStr, vipSeatsStr;
+    int eventID;
+    string eventName;
+    int totalSeats, vipSeats, regularSeats;
+
+    // Input event details (existing logic)
+    while (true) {
+        cout << "Enter event ID: ";
+        getline(cin, eventIDStr);
+        if (errorHandler.idValidation(eventIDStr)) {
+            eventID = stoi(eventIDStr);
+            break;
+        }
+        cout << "\n\tInvalid event ID. Please enter a numeric event ID with no spaces.\n";
+    }
+
+    if (events.find(eventID) != events.end()) {
+        cout << "\n\tEvent ID already exists. Please choose a different event ID.\n";
+        return;
+    }
+
+    while (true) {
+        cout << "\nEnter Event Name: ";
+        getline(cin, eventName);
+        if (errorHandler.nameValidation(eventName)) {
+            break;
+        } else {
+            cout << "\n\n\tInvalid Event Name. Please try again.\n";
+        }
+    }
+
+    while (true) {
+        cout << "Enter total seats: ";
+        getline(cin, totalSeatsStr);
+        if (errorHandler.idValidation(totalSeatsStr)) {
+            totalSeats = stoi(totalSeatsStr);
+            break;
+        } else {
+            cout << "Invalid number of total seats. Please enter a numeric value with no spaces.\n";
+        }
+    }
+
+    while (true) {
+        cout << "Enter number of VIP seats: ";
+        getline(cin, vipSeatsStr);
+        if (errorHandler.idValidation(vipSeatsStr)) {
+            vipSeats = stoi(vipSeatsStr);
+            if (vipSeats <= totalSeats) {
+                regularSeats = totalSeats - vipSeats;
+                break;
+            } else {
+                cout << "VIP seats cannot exceed total seats. Please enter again.\n";
+            }
+        } else {
+            cout << "Invalid number of VIP seats. Please enter a numeric value with no spaces.\n";
+        }
+    }
+
+    // Create and store event
+    Event newEvent = {eventID, eventName, totalSeats, vipSeats, regularSeats};
+    events[eventID] = newEvent;
+
+    // Save event to file
+    ofstream outFile("events.txt", ios::app);
+    if (outFile.is_open()) {
+        outFile << eventID << "," << eventName << "," << totalSeats << "," << vipSeats << "," << regularSeats << "\n";
+        outFile.close();
+        cout << "Event added and saved successfully!\n";
+    } else {
+        cout << "Error: Could not open file to save event.\n";
+    }
+}
