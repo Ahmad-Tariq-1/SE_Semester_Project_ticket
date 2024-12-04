@@ -1405,3 +1405,42 @@ void manageTickets()
         cout << "Available VIP seats: " << event.vipSeatsQueue.size() << ", Available Regular seats: " << event.regularSeatsQueue.size() << "\n";
     }
 }
+
+void searchEvents()
+{
+    if (events.empty())
+    {
+        cout << "No events available to search.\n";
+        return;
+    }
+
+    string query;
+    cout << "Enter event name to search: ";
+    getline(cin, query);
+
+    bool found = false;
+    cout << "Search results:\n";
+    for (const auto &event : events)
+    {
+        int eventID = event.first;
+        const Event &e = event.second;
+        if (e.eventName.find(query) != string::npos)
+        {
+            cout << "Event ID: " << eventID << ", Event Name: " << e.eventName << '\n';
+            if (e.vipSeatsQueue.empty() && e.regularSeatsQueue.empty())
+            {
+                cout << "No seats left.\n";
+            }
+            else
+            {
+                cout << "VIP Seats Available: " << e.vipSeatsQueue.size() << ", Regular Seats Available: " << e.regularSeatsQueue.size() << "\n";
+            }
+            found = true;
+        }
+    }
+
+    if (!found)
+    {
+        cout << "No events found matching the query.\n";
+    }
+}
