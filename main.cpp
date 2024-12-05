@@ -1537,3 +1537,62 @@ void displayAllEvents()
              << ", Regular Seats Available: " << e.regularSeatsQueue.size() << '\n';
     }
 }
+
+int main()
+{
+    setupDefaultAdmin();
+    loadEvents();
+    while (true)
+    {
+        cout << "\n\n\t**** Event Ticket Reservation System ****\n";
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Sign Up" << setw(28) << "|\n";
+        cout << "\t\t| [2]   |     Login" << setw(30) << "|\n";
+        cout << "\t\t| [3]   |     Admin Panel" << setw(24) << "|\n";
+        cout << "\t\t| [4]   |     Search Events" << setw(22) << "|\n";
+        cout << "\t\t| [5]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t||_|\n";
+
+        string choice;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, choice);
+            if (errorHandler.menuChoice(choice))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (choice == "1")
+        {
+            signup();
+        }
+        else if (choice == "2")
+        {
+            login();
+        }
+        else if (choice == "4")
+        {
+            searchEvents();
+        }
+        else if (choice == "3")
+        {
+            displayAdminMenu();
+        }
+        else if (choice == "5")
+
+        {
+            cout << "\n\tExiting... Have a great day!\n";
+            break;
+        }
+        else
+        {
+            cout << "\n\tInvalid option! Please try again.\n";
+        }
+    }
+
+    return 0;
+}
