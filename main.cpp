@@ -1517,3 +1517,23 @@ void displayAdminMenu()
         }
     }
 }
+
+void displayAllEvents()
+{
+    if (events.empty())
+    {
+        cout << "No events available.\n";
+        return;
+    }
+
+    cout << "All events:\n";
+    for (const auto &event : events)
+    {
+        int eventID = event.first;
+        const Event &e = event.second;
+        cout << "Event ID: " << eventID
+             << ", Event Name: " << e.eventName
+             << ", VIP Seats Available: " << e.vipSeatsQueue.size()
+             << ", Regular Seats Available: " << e.regularSeatsQueue.size() << '\n';
+    }
+}
