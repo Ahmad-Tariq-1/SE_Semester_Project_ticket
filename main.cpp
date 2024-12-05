@@ -1444,3 +1444,76 @@ void searchEvents()
         cout << "No events found matching the query.\n";
     }
 }
+
+void displayAdminMenu()
+{
+    string loggedInAdmin;
+    if (!adminLogin(loggedInAdmin))
+    {
+        return; 
+    }
+    while (true)
+    {
+        cout << "\n\t\t ______________________________________________\n";
+        cout << "\t\t|       |" << setw(40) << "|\n";
+        cout << "\t\t| [1]   |     Add Event" << setw(26) << "|\n";
+        cout << "\t\t| [2]   |     Update Event" << setw(23) << "|\n";
+        cout << "\t\t| [3]   |     Manage Tickets" << setw(21) << "|\n";
+        cout << "\t\t| [4]   |     View All Users" << setw(21) << "|\n";
+        cout << "\t\t| [5]   |     View All Events" << setw(20) << "|\n";
+        cout << "\t\t| [6]   |     View All Users Data" << setw(16) << "|\n";
+        cout << "\t\t| [7]   |     Manage Admin" << setw(23) << "|\n";
+        cout << "\t\t| [0]   |     Exit" << setw(31) << "|\n";
+        cout << "\t\t||_|\n";
+
+        string option;
+        while (true)
+        {
+            cout << "Enter your choice: ";
+            getline(cin, option);
+            if (errorHandler.menuChoice(option))
+            {
+                break;
+            }
+            cout << "\n\tInvalid option! Please try again.\n\n";
+        }
+
+        if (option == "1")
+        {
+            addEvent();
+        }
+        else if (option == "2")
+        {
+            updateEvent();
+        }
+        else if (option == "3")
+        {
+            manageTickets();
+        }
+        else if (option == "4")
+        {
+            viewAllUsers();
+        }
+        else if (option == "5")
+        {
+            displayAllEvents();
+        }
+        else if (option == "6")
+        {
+            displayAllUserData();
+        }
+        else if (option == "7")
+        {
+            updateadminPanel(loggedInAdmin);
+        }
+        else if (option == "0")
+        {
+            cout << "Exit User Panel\n";
+            break;
+        }
+        else
+        {
+            cout << "Invalid choice. Please try again.\n";
+        }
+    }
+}
